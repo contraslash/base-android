@@ -1,10 +1,17 @@
-package com.contraslash.android.openspeechcorpus.base;
+package com.contraslash.android.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+
+import com.contraslash.android.pabloadventurequest.R;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by ma0 on 9/1/15.
@@ -16,8 +23,20 @@ public abstract class BaseActivity extends ActionBarActivity {
     private SharedPreferences preferencias;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("fonts/Dosis/Dosis-Regular.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//        );
+
         setContentView(getLayoutResourceId());
         TAG = getLocalClassName();
         preferencias = PreferenceManager.getDefaultSharedPreferences(this);
@@ -61,5 +80,15 @@ public abstract class BaseActivity extends ActionBarActivity {
         Intent cambioDeActividad = new Intent(this, destino);
         cambioDeActividad.putExtras(extras);
         startActivity(cambioDeActividad);
+    }
+
+    public void addListenerToChangeActivity(View view, final Class destino)
+    {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(destino);
+            }
+        });
     }
 }

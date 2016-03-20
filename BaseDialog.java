@@ -1,4 +1,4 @@
-package com.contraslash.android.openspeechcorpus.base;
+package com.contraslash.android.base;
 
 import android.app.Activity;
 import android.app.DialogFragment;
