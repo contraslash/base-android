@@ -1,6 +1,6 @@
 package com.contraslash.android.base;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,60 +8,37 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
-import com.contraslash.android.pabloadventurequest.R;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by ma0 on 9/1/15.
+ * Modified by ma0 on 9/9/16
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends Activity {
 
     protected String TAG;
 
-    private SharedPreferences preferencias;
+    private SharedPreferences preferences;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                        .setDefaultFontPath("fonts/Dosis/Dosis-Regular.ttf")
-//                        .setFontAttrId(R.attr.fontPath)
-//                        .build()
-//        );
 
         setContentView(getLayoutResourceId());
         TAG = getLocalClassName();
-        preferencias = PreferenceManager.getDefaultSharedPreferences(this);
-
-        preferencias.edit().putInt("ID_USUARIO",1).putString("NOMBRE_USUARIO","MA0").apply();
-
-        SharedPreferences.Editor editor = preferencias.edit();
-
-        editor.putInt("ID_USUARIO",1);
-
-        editor.putString("NOMBRE_USUARIO","MA0");
-
-        editor.apply();
-
-        int idUsuario = preferencias.getInt("ID_USUARIO",-1);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mapGUI();
 
         loadEvents();
+        
     }
 
     protected abstract int getLayoutResourceId();
 
     public SharedPreferences getPreferences() {
-        return preferencias;
+        return preferences;
     }
 
     protected abstract void mapGUI();
@@ -69,25 +46,25 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected abstract void loadEvents();
 
-    public void changeActivity(Class destino)
+    public void changeActivity(Class destiny)
     {
-        Intent cambioDeActividad = new Intent(this, destino);
-        startActivity(cambioDeActividad);
+        Intent changeActivity = new Intent(this, destiny);
+        startActivity(changeActivity);
     }
 
-    public void changeActivity(Class destino, Bundle extras)
+    public void changeActivity(Class destiny, Bundle extras)
     {
-        Intent cambioDeActividad = new Intent(this, destino);
-        cambioDeActividad.putExtras(extras);
-        startActivity(cambioDeActividad);
+        Intent changeActivity = new Intent(this, destiny);
+        changeActivity.putExtras(extras);
+        startActivity(changeActivity);
     }
 
-    public void addListenerToChangeActivity(View view, final Class destino)
+    public void addListenerToChangeActivity(View view, final Class destiny)
     {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(destino);
+                changeActivity(destiny);
             }
         });
     }
